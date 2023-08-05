@@ -9,7 +9,7 @@ app:
 	python3 manage.py startapp $(name)
 
 admin:
-	python3 manage.py createsuseruser
+	python3 manage.py createsuperuser
 
 coll:
 	python3 manage.py collectstatic

@@ -114,6 +114,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'user.UserModel'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -125,14 +127,14 @@ STATICFILES_DIRS = BASE_DIR / 'assets',
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CKEDITOR_BASEPATH = 'static/ckeditor/ckeditor/'
+# CKEDITOR_BASEPATH = 'static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
-        'height': 300,
-        'width': 300,
+        # 'height': 300,
+        # 'width': 300,
     }
 }
 

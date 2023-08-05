@@ -1,10 +1,30 @@
 from ckeditor.fields import RichTextField
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
 class CategoryModel(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('slug'), max_length=130, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+
+        while self.__class__.objects.filter(slug=self.slug).exists():
+            slug = self.__class__.objects.filter(slug=self.slug).first().slug
+            if '-' in slug:
+                try:
+                    if slug.split('-')[-1] in self.name:
+                        self.slug += '-1'
+                    else:
+                        self.slug = '-'.join(slug.split('-')[:-1]) + '-' + str(int(slug.split('-')[-1]) + 1)
+                except:
+                    self.slug = slug + '-1'
+            else:
+                self.slug += '-1'
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -17,6 +37,25 @@ class CategoryModel(models.Model):
 
 class TagModel(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('slug'), max_length=130, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+
+        while self.__class__.objects.filter(slug=self.slug).exists():
+            slug = self.__class__.objects.filter(slug=self.slug).first().slug
+            if '-' in slug:
+                try:
+                    if slug.split('-')[-1] in self.name:
+                        self.slug += '-1'
+                    else:
+                        self.slug = '-'.join(slug.split('-')[:-1]) + '-' + str(int(slug.split('-')[-1]) + 1)
+                except:
+                    self.slug = slug + '-1'
+            else:
+                self.slug += '-1'
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -66,6 +105,31 @@ class ProductModel(models.Model):
     tags = models.ManyToManyField(verbose_name=_('tags'), to=TagModel, related_name='products')
     sizes = models.ManyToManyField(verbose_name=_('sizes'), to=SizeModel, related_name='products')
     colors = models.ManyToManyField(verbose_name=_('colors'), to=ColorModel, related_name='products')
+    slug = models.SlugField(verbose_name=_('slug'), max_length=130, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+
+        while self.__class__.objects.filter(slug=self.slug).exists():
+            slug = self.__class__.objects.filter(slug=self.slug).first().slug
+            if '-' in slug:
+                try:
+                    if slug.split('-')[-1] in self.name:
+                        self.slug += '-1'
+                    else:
+                        self.slug = '-'.join(slug.split('-')[:-1]) + '-' + str(int(slug.split('-')[-1]) + 1)
+                except:
+                    self.slug = slug + '-1'
+            else:
+                self.slug += '-1'
+
+        super().save(*args, **kwargs)
+
+    @property
+    def is_sale(self) -> bool:
+        if self.sale_percent:
+            return True
+        return False
 
     def __str__(self):
         return self.name
@@ -74,3 +138,4 @@ class ProductModel(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         db_table = 'products'
+        ordering = ['-created_at']
