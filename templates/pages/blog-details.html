@@ -60,7 +60,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__tags">
                                         {% for tag in blog.tags.all %}
-                                            <a href="#">#{{ tag.name }}</a>
+                                            <a href="{% url 'blog:blogs' %}?tag={{ tag.slug }}">#{{ tag.name }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -68,35 +68,50 @@
                         </div>
                         <div class="blog__details__btns">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span> Previous Pod</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
-                                    </a>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Next Pod <span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
-                                    </a>
-                                </div>
+                                {% with blog.get_previous_by_created_at as prev %}
+                                    {% with blog.get_next_by_created_at as nex %}
+                                        {% if prev %}
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <a href="{% url "blog:blog_detail" prev.slug %}" class="blog__details__btns__item">
+                                                    <p><span class="arrow_left"></span>Previous</p>
+                                                    <h5>{{ prev.title|truncatewords:"8" }}</h5>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if nex %}
+                                            <div class="col-lg-6
+                                            {% if not prev %}
+                                            offset-6
+                                            {% endif %}
+                                            col-md-6 col-sm-6">
+                                                <a href="{% url "blog:blog_detail" nex.slug %}"
+                                                   class="blog__details__btns__item blog__details__btns__item--next">
+                                                    <p>Next<span class="arrow_right"></span></p>
+                                                    <h5>{{ nex.title|truncatewords:"8" }}</h5>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endwith %}
                             </div>
                         </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <form action="{% url 'blog:comment' slug=blog.slug %}" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                        <input type="text" name="name" required placeholder="Name">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
+                                        <input type="text" name="email" required placeholder="Email">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
+                                        <input type="text" name="phone" required placeholder="Phone">
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
+                                        <textarea name="comment" required placeholder="Comment"></textarea>
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
