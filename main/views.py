@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView
 
+from blog.models import BlogModel
 from main.models import ContactModel
 
 
@@ -8,6 +9,11 @@ from main.models import ContactModel
 
 class HomeView(TemplateView):
     template_name = 'pages/index.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['blogs'] = BlogModel.objects.all()[:3]
+        return data
 
 
 class CreteContactView(CreateView):

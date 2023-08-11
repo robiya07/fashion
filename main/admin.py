@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from main.models import MemberModel, ContactModel
+from main.models import MemberModel, ContactModel, BannerModel
 
 
 # Register your models here.
@@ -17,3 +17,11 @@ class ContactModelAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'name', 'email')
     list_filter = ('created_at',)
     search_fields = ('name', 'email')
+
+
+@admin.register(BannerModel)
+class ContactModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'is_active')
+    list_display_links = ('id', 'title', 'is_active')
+    list_filter = ('created_at',)
+    search_fields = ('title',)

@@ -34,3 +34,20 @@ class ContactModel(models.Model):
         verbose_name = 'Contact'
         verbose_name_plural = 'Contacts'
         db_table = 'contacts'
+
+
+class BannerModel(models.Model):
+    collection = models.CharField(max_length=50)
+    title = models.CharField(max_length=60)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Banner'
+        verbose_name_plural = 'Banners'
+        db_table = 'banners'
+        ordering = ['created_at']
