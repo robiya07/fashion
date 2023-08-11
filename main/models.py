@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from product.models import CollectionModel
+
 
 class MemberModel(models.Model):
     first_name = models.CharField(verbose_name=_('first_name'), max_length=100)
@@ -37,11 +39,11 @@ class ContactModel(models.Model):
 
 
 class BannerModel(models.Model):
-    collection = models.CharField(max_length=50)
-    title = models.CharField(max_length=60)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    collection = models.OneToOneField(verbose_name=_("collection"), to=CollectionModel, on_delete=models.CASCADE, related_name='banner')
+    title = models.CharField(verbose_name=_("title"), max_length=60)
+    description = models.TextField(verbose_name=_("description"))
+    created_at = models.DateTimeField(verbose_name=_("created_at"), auto_now_add=True)
+    is_active = models.BooleanField(verbose_name=_("is_active"), default=True)
 
     def __str__(self):
         return self.title

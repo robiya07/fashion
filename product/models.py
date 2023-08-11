@@ -2,6 +2,7 @@ from ckeditor.fields import RichTextField
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from datetime import datetime, timedelta
 
 
 class CategoryModel(models.Model):
@@ -90,6 +91,18 @@ class ColorModel(models.Model):
         db_table = 'colors'
 
 
+class CollectionModel(models.Model):
+    name = models.CharField(verbose_name=_('name'), max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Collection'
+        verbose_name_plural = 'Collections'
+        db_table = 'collections'
+
+
 class ProductModel(models.Model):
     main_image = models.ImageField(verbose_name=_('main_image'), upload_to='images/products/main/')
     name = models.CharField(verbose_name=_('name'), max_length=200)
@@ -106,6 +119,8 @@ class ProductModel(models.Model):
     sizes = models.ManyToManyField(verbose_name=_('sizes'), to=SizeModel, related_name='products')
     colors = models.ManyToManyField(verbose_name=_('colors'), to=ColorModel, related_name='products')
     slug = models.SlugField(verbose_name=_('slug'), max_length=130, unique=True, blank=True, null=True)
+    collection = models.ForeignKey(verbose_name=_('collection'), to=CollectionModel, related_name='products',
+                                   on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -124,6 +139,13 @@ class ProductModel(models.Model):
                 self.slug += '-1'
 
         super().save(*args, **kwargs)
+
+    def is_new(self):
+        current_date = datetime.now().date()
+        days_3_ago = current_date - timedelta(days=3)
+        if self.created_at >= days_3_ago:
+            return True
+        return False
 
     @property
     def is_sale(self) -> bool:

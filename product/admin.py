@@ -9,6 +9,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'price')
     list_display_links = ('name', 'price')
     search_fields = ('name', 'price')
+    readonly_fields = ('real_price',)
 
 
 @admin.register(TagModel)

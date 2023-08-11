@@ -65,7 +65,7 @@
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li class="active"><a href="{% url 'main:home' %}">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="{% url "product:shop" %}">Shop</a></li>
                         <li><a href="{% url 'blog:blogs' %}">Blog</a></li>
                         <li><a href="{% url "main:contact" %}">Contacts</a></li>
                     </ul>
