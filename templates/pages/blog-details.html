@@ -72,7 +72,8 @@
                                     {% with blog.get_next_by_created_at as nex %}
                                         {% if prev %}
                                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <a href="{% url "blog:blog_detail" prev.slug %}" class="blog__details__btns__item">
+                                                <a href="{% url "blog:blog_detail" prev.slug %}"
+                                                   class="blog__details__btns__item">
                                                     <p><span class="arrow_left"></span>Previous</p>
                                                     <h5>{{ prev.title|truncatewords:"8" }}</h5>
                                                 </a>
@@ -96,6 +97,22 @@
                                 {% endwith %}
                             </div>
                         </div>
+
+                        <div>
+                            <hr>
+                            {% for comment in blog.comments.all %}
+                                <div>
+                                    <div class="d-flex justify-content-between">
+                                        <b><u>{{ comment.name }}</u></b>
+                                        <i>{{ comment.created_at|timesince }} ago</i>
+                                    </div>
+                                    <p>{{ comment.comment }}</p>
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
                             <form action="{% url 'blog:comment' slug=blog.slug %}" method="post">

@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ckeditor',
+    'widget_tweaks',
 
     'main.apps.MainConfig',
     'product.apps.ProductConfig',

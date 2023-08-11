@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView
 
 from blog.forms import CreateCommentForm
-from blog.models import BlogModel, CommentModel
+from blog.models import BlogModel
 
 
 class BlogListView(ListView):

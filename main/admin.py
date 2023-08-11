@@ -13,6 +13,7 @@ class MemberModelAdmin(admin.ModelAdmin):
 
 @admin.register(ContactModel)
 class ContactModelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email')
-    list_display_links = ('name', 'email')
+    list_display = ('id', 'name', 'email')
+    list_display_links = ('id', 'name', 'email')
+    list_filter = ('created_at',)
     search_fields = ('name', 'email')
