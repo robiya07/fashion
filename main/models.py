@@ -39,7 +39,8 @@ class ContactModel(models.Model):
 
 
 class BannerModel(models.Model):
-    collection = models.OneToOneField(verbose_name=_("collection"), to=CollectionModel, on_delete=models.CASCADE, related_name='banner')
+    collection = models.OneToOneField(verbose_name=_("collection"), to=CollectionModel, on_delete=models.CASCADE,
+                                      related_name='banner')
     title = models.CharField(verbose_name=_("title"), max_length=60)
     description = models.TextField(verbose_name=_("description"))
     created_at = models.DateTimeField(verbose_name=_("created_at"), auto_now_add=True)

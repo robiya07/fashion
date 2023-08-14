@@ -99,18 +99,16 @@
                         </div>
 
                         <div>
-                            <hr>
                             {% for comment in blog.comments.all %}
-                                <div>
+                                <hr>
+                                <div class="mb-4">
                                     <div class="d-flex justify-content-between">
                                         <b><u>{{ comment.name }}</u></b>
                                         <i>{{ comment.created_at|timesince }} ago</i>
                                     </div>
                                     <p>{{ comment.comment }}</p>
                                 </div>
-
                             {% endfor %}
-
                         </div>
 
                         <div class="blog__details__comment">

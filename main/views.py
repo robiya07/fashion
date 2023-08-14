@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 
 from blog.models import BlogModel
-from main.models import ContactModel
+from main.models import ContactModel, MemberModel
 
 
 # Create your views here.
@@ -23,3 +23,9 @@ class CreteContactView(CreateView):
 
     def get_success_url(self):
         return redirect('main:contact')
+
+
+class AboutView(ListView):
+    template_name = 'pages/about.html'
+    model = MemberModel
+    context_object_name = 'members'
