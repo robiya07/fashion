@@ -141,9 +141,10 @@ class ProductModel(models.Model):
         super().save(*args, **kwargs)
 
     def is_new(self):
-        current_date = datetime.now().date()
-        days_3_ago = current_date - timedelta(days=3)
-        if self.created_at >= days_3_ago:
+        current = datetime.now()
+        days = current - timedelta(days=3)
+        print(current, days)
+        if self.created_at.date() >= days.date():
             return True
         return False
 

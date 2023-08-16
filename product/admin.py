@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
+from product.forms import ColorModelAdminForm
 from product.models import ProductModel, TagModel, SizeModel, ColorModel, CategoryModel
 
 
@@ -28,9 +30,14 @@ class SizeModelAdmin(admin.ModelAdmin):
 
 @admin.register(ColorModel)
 class ColorModelAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    form = ColorModelAdminForm
+    list_display = ('name', 'color')
     list_display_links = ('name',)
     search_fields = ('name',)
+
+    def color(self, obj):
+        return mark_safe(
+            f'<div style="width: 25px; height: 25px; border-radius: 50%; background-color: {obj.name};"></div>')
 
 
 @admin.register(CategoryModel)
